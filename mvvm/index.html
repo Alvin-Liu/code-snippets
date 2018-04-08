@@ -6,7 +6,8 @@
 </head>
 <body>
   <div id="app">
-    <p>{{ age }}</p>
+    <input type="text" v-model="age">
+    <p>age:{{ age }}, name: {{ name.firstName}}</p>
   </div>
   <script src="./js/observer.js"></script>
   <script src="./js/dep.js"></script>

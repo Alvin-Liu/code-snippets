@@ -24,34 +24,49 @@ class Compile {
   }
   compileElement (el) {
     const childNodes = el.childNodes
+    const vm = this.$vm
     Array.from(childNodes).forEach((node) => {
       const text = node.textContent
       const reg = /\{\{((?:.|\n)+?)\}\}/g
 
       if (this.isTextNode(node) && reg.test(text)) {
-        this.compileText(node, RegExp.$1.trim())
+        const compileText = () => {
+          const value = text.replace(reg, (matched, placeholder) => {
+            placeholder = placeholder.trim()
+            vm.$watch(placeholder, compileText)
+            return placeholder.split('.').reduce((val, key) => {
+              return val[key]
+            }, vm)
+          })
+          node.textContent = typeof value === 'undefined' ? '' : value
+        }
+        compileText()
       }
+
+      if (this.isElementNode(node)) {
+        const nodeAttr = node.attributes
+        Array.from(nodeAttr).forEach((attr) => {
+          const name = attr.name
+          const exp = attr.value
+          if (name.includes('v-')) {
+            node.value = vm[exp]
+
+            vm.$watch(exp, (newVal) => {
+              node.value = newVal
+            })
+            
+            node.addEventListener('input', (e) => {
+              let newVal = e.target.value
+              vm[exp] = newVal  
+            })
+          }
+        })
+      }
+
       if (node.childNodes && node.childNodes.length) {
         this.compileElement(node)
       }
     })
-  }
-  compileText (node, exp) {
-    let val = this.$vm
-    const arr = exp.split('.')
-    arr.forEach((key) => {
-      val = val[key]
-    })
-
-    this.textUpdater(node, val)
-    this.$vm.$watch(exp, (newValue, oldValue) => {
-      this.textUpdater(node, newValue)
-    })
-  }
-  textUpdater (node, value) {
-    node.textContent = typeof value === 'undefined' 
-      ? '' 
-      : value
   }
   isElementNode (node) {
     return node.nodeType === 1

@@ -39,7 +39,7 @@ class Watcher {
     if (/[^\w.$]/.test(exp)) {
       return
     }
-    let exps = exp.split('.')
+    const exps = exp.split('.')
     return (obj) => {
       for (let i = 0, len = exps.length; i < len; i++) {
         if (!obj) {
