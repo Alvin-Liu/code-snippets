@@ -6,7 +6,10 @@
 
 克隆：
 
-	> git clone https://github.com/Alvin-Liu/h5editor.git
+```sh
+git clone https://github.com/Alvin-Liu/code-snippets.git
+```
+
 
 ## 进展
 
