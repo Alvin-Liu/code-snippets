@@ -10,17 +10,6 @@
       </comp-container>
     </div>
     <el-button type="primary" @click="addContainer">添加容器</el-button>
-
-    <!--<el-dialog :visible.sync="dialogVisible" append-to-body>-->
-      <!--<el-radio-group v-model="currentComponentName">-->
-        <!--<el-radio v-for="comp in componentList" :key="comp.componentName" :label="comp.componentName">{{ comp.name }}</el-radio>-->
-      <!--</el-radio-group>-->
-
-      <!--<span slot="footer" class="dialog-footer">-->
-        <!--<el-button @click="dialogVisible = false">取 消</el-button>-->
-        <!--<el-button type="primary" @click="dialogVisible = false">确 定</el-button>-->
-      <!--</span>-->
-    <!--</el-dialog>-->
   </div>
 </template>
 
