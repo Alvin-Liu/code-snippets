@@ -11,28 +11,45 @@
     <el-button type="primary" @click="openDialog">添加组件</el-button>
 
     <el-dialog :visible.sync="dialogVisible" append-to-body>
-      <el-radio-group v-model="currentComponentName">
-        <el-radio
-          v-for="comp in componentList"
-          :key="comp.componentName"
-          :label="comp.componentName">
-          {{ comp.name }}
-        </el-radio>
-      </el-radio-group>
+      <el-tabs v-model="activeName" @tab-click="handleTabClick">
+        <el-tab-pane label="组件" name="component">
+          <el-radio-group v-model="currentComponentName">
+            <el-radio
+                v-for="comp in componentList"
+                :key="comp.componentName"
+                :label="comp.componentName">
+              {{ comp.name }}
+            </el-radio>
+          </el-radio-group>
+        </el-tab-pane>
+        <el-tab-pane label="容器" name="container">
+          <el-radio-group v-model="currentContainerName">
+            <el-radio
+              v-for="(ctn, index) in containerList"
+              :key="index"
+              :label="ctn.containerName">
+              {{ ctn.name }}
+            </el-radio>
+          </el-radio-group>
+        </el-tab-pane>
+      </el-tabs>
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addComponent">确 定</el-button>
+        <el-button type="primary" @click="onConfirm">确 定</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import {componentList} from '@/const/components'
+import {componentList, containerList} from '@/const/components'
 import {getRandomId} from '@/const/utils'
 
 const defaultComponentName = componentList[0] && componentList[0].componentName
+const defaultContainerName = containerList[0] && containerList[0].containerName
+
+const COMPONENT = 'component'
 
 export default {
   name: 'comp-container',
@@ -46,7 +63,10 @@ export default {
     return {
       dialogVisible: false,
       currentComponentName: defaultComponentName,
-      componentList
+      currentContainerName: defaultContainerName,
+      activeName: COMPONENT,
+      componentList,
+      containerList
     }
   },
   computed: {
@@ -55,13 +75,19 @@ export default {
     }
   },
   methods: {
+    handleTabClick () {
+
+    },
     openDialog () {
       this.dialogVisible = true
+    },
+    onConfirm () {
+      this.activeName === COMPONENT ? this.addComponent() : this.addContainer()
+      this.dialogVisible = false
     },
     addComponent () {
       const component = componentList.find(comp => comp.componentName === this.currentComponentName)
 
-      this.dialogVisible = false
       this.currentComponentName = defaultComponentName
       if (!component) {
         return
@@ -71,6 +97,9 @@ export default {
         containerId: this.containerId,
         component: component
       })
+    },
+    addContainer () {
+
     }
   }
 }

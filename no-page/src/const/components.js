@@ -19,3 +19,10 @@ export const componentList = [
     componentName: 'el-checkbox'
   }
 ]
+
+export const containerList = [
+  {
+    name: '容器一',
+    containerName: 'layout1'
+  }
+]
