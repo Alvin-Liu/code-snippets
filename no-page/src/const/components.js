@@ -23,6 +23,6 @@ export const componentList = [
 export const containerList = [
   {
     name: '容器一',
-    containerName: 'layout1'
+    containerName: 'layout-container'
   }
 ]

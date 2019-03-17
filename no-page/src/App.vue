@@ -2,11 +2,10 @@
   <div id="app">
     <div class="containers">
       <comp-container
+        v-if="rootContainer"
         class="container"
-        v-for="(ctn, index) in containers"
-        :key="index"
-        :containerId="ctn.id">
-        {{ctn.name}}
+        :containerId="rootContainer.id">
+        {{rootContainer.name}}
       </comp-container>
     </div>
     <el-button type="primary" @click="addContainer">添加容器</el-button>
@@ -32,6 +31,9 @@ export default {
   computed: {
     containers () {
       return this.$store.getters.containers
+    },
+    rootContainer () {
+      return this.containers[0]
     }
   },
   methods: {
@@ -56,7 +58,6 @@ export default {
 }
 .container {
   width: 100%;
-  height: 200px;
   border: 1px solid #f00
 }
 </style>

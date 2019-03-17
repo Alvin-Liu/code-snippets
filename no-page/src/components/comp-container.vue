@@ -4,6 +4,7 @@
       v-for="comp in container.components"
       :key="comp.id"
       :is="comp.componentName"
+      :id="comp.id"
       v-bind="comp.attrs">
       {{ comp.content }}
     </component>
@@ -45,6 +46,7 @@
 <script>
 import {componentList, containerList} from '@/const/components'
 import {getRandomId} from '@/const/utils'
+import LayoutContainer from '@/components/layout-container'
 
 const defaultComponentName = componentList[0] && componentList[0].componentName
 const defaultContainerName = containerList[0] && containerList[0].containerName
@@ -53,6 +55,9 @@ const COMPONENT = 'component'
 
 export default {
   name: 'comp-container',
+  components: {
+    LayoutContainer
+  },
   props: {
     containerId: {
       type: [String, Number],
@@ -101,7 +106,28 @@ export default {
       })
     },
     addContainer () {
+      const ctn = containerList.find(ctn => ctn.containerName === this.currentContainerName)
 
+      if (!ctn) {
+        return
+      }
+
+      const randomId = getRandomId(32)
+
+      this.$store.commit('addComponent', {
+        containerId: this.containerId,
+        component: {
+          id: randomId,
+          name: '容器一',
+          componentName: ctn.containerName
+        }
+      })
+
+      this.$store.commit('addContainer', {
+        id: randomId,
+        name: '容器一',
+        containerName: ctn.containerName
+      })
     }
   }
 }
