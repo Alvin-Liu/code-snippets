@@ -84,11 +84,13 @@ export default {
     onConfirm () {
       this.activeName === COMPONENT ? this.addComponent() : this.addContainer()
       this.dialogVisible = false
+
+      this.currentComponentName = defaultComponentName
+      this.currentContainerName = defaultContainerName
     },
     addComponent () {
       const component = componentList.find(comp => comp.componentName === this.currentComponentName)
 
-      this.currentComponentName = defaultComponentName
       if (!component) {
         return
       }
