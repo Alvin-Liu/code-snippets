@@ -60,4 +60,8 @@ export default {
   width: 100%;
   border: 1px solid #f00
 }
+.container .container {
+  width: 80%;
+  margin: 30px auto;
+}
 </style>
